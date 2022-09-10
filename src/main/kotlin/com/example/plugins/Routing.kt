@@ -41,9 +41,27 @@ fun Application.configureRouting() {
             }
             get("{id}/edit") {
                 // Show a page with fields for editing an article
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                call.respond(FreeMarkerContent("edit.ftl", mapOf("article" to articles.find { it.id == id })))
             }
             post("{id}") {
                 // Update or delete an article
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                val formParameters = call.receiveParameters()
+                when (formParameters.getOrFail("_action")) {
+                    "update" -> {
+                        val index = articles.indexOf(articles.find { it.id == id })
+                        val title = formParameters.getOrFail("title")
+                        val body = formParameters.getOrFail("body")
+                        articles[index].title = title
+                        articles[index].body = body
+                        call.respondRedirect("/articles/$id")
+                    }
+                    "delete" -> {
+                        articles.removeIf { it.id == id }
+                        call.respondRedirect("/articles")
+                    }
+                }
             }
         }
 
