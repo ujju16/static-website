@@ -15,11 +15,13 @@ fun Application.configureRouting() {
 
     routing {
         get("/") {
-            call.respondRedirect("articles")
+            call.respond(FreeMarkerContent("index.ftl", mapOf("articles" to articles)))
+
         }
         route("articles") {
             get {
                 // Show a list of articles
+                call.respondRedirect("articles")
             }
             get("new") {
                 // Show a page with fields for creating a new article
@@ -66,7 +68,7 @@ fun Application.configureRouting() {
         }
 
              get {
-                call.respond(FreeMarkerContent("index.ftl", mapOf("articles" to articles)))
+
             }
 
         // Static plugin. Try to access `/static/index.html`
