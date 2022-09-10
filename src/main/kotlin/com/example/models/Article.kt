@@ -9,8 +9,10 @@ private constructor(val id: Int, var title: String, var body: String) {
 
         fun newEntry(title: String, body: String) = Article(idCounter.getAndIncrement(), title, body)
     }
-    val articles = mutableListOf(Article.newEntry(
-        "The drive to develop!",
-        "...it's what keeps me going."
-    ))
+
 }
+
+val articles = mutableListOf(Article.newEntry(
+    "The drive to develop!",
+    "...it's what keeps me going."
+))
